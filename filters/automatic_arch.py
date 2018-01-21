@@ -21,21 +21,77 @@ import time
 import magic
 
 
+PE32_List = [
+    "PE32 executable (console) Intel 80386, for MS Windows",
+    "PE32 executable (console) Intel 80386 Mono/.Net assembly, for MS Windows",
+    "PE32 executable (DLL) (console) Intel 80386, for MS Windows",
+    "PE32 executable (DLL) (console) Intel 80386 Mono/.Net assembly, for MS Windows",
+    "PE32 executable (DLL) (GUI) Intel 80386, for MS Windows",
+    "PE32 executable (DLL) (GUI) Intel 80386 Mono/.Net assembly, for MS Windows",
+    "PE32 executable (DLL) (GUI) Intel 80386 (stripped to external PDB), for MS Windows",
+    "PE32 executable (DLL) (native) Intel 80386, for MS Windows",
+    "PE32 executable (GUI) Intel 80386, for MS Windows",
+    "PE32 executable (GUI) Intel 80386 Mono/.Net assembly, for MS Windows",
+    "PE32 executable (native) Intel 80386, for MS Windows",
+    "PE32 executable (Unknown subsystem 0x10) Intel 80386, for MS Windows",
+    "8086 relocatable (Microsoft)"
+]
+
+PE64_List = [
+    "PE32+ executable (console) x86-64, for MS Windows",
+    "PE32+ executable (console) x86-64 Mono/.Net assembly, for MS Windows",
+    "PE32+ executable (DLL) (console) x86-64, for MS Windows",
+    "PE32+ executable (DLL) (console) x86-64 Mono/.Net assembly, for MS Windows",
+    "PE32+ executable (DLL) (EFI application) x86-64, for MS Windows",
+    "PE32+ executable (DLL) (GUI) x86-64, for MS Windows",
+    "PE32+ executable (DLL) (GUI) x86-64 Mono/.Net assembly, for MS Windows",
+    "PE32+ executable (DLL) (native) x86-64, for MS Windows",
+    "PE32+ executable (GUI) x86-64, for MS Windows",
+    "PE32+ executable (GUI) x86-64 Mono/.Net assembly, for MS Windows",
+    "PE32+ executable (native) x86-64, for MS Windows",
+    "PE32+ executable (Unknown subsystem 0x10) x86-64, for MS Windows"
+]
+
+
+ELF32_List = [
+    "ELF 32-bit LSB executable",
+    "ELF 32-bit LSB relocatable",
+    "ELF 32-bit LSB shared object"
+]
+
+ELF64_List = [
+    "ELF 64-bit LSB relocatable",
+    "ELF 64-bit"
+]
+
 class MagicFile:
     def __init__(self, name):
         self.magic_info = magic.from_file(name)
+        logmsg('Debug: {}'.format(self.magic_info))
 
     def is_pe32(self):
-        return 'PE32' in self.magic_info
+        for info in PE32_List:
+            if self.magic_info.startswith(info):
+                return True
+        return False
 
     def is_elf32(self):
-        return 'ELF 32-bit' in self.magic_info
+        for info in ELF32_List:
+            if self.magic_info.startswith(info):
+                return True
+        return False
 
     def is_pe64(self):
-        return 'PE64' in self.magic_info
+        for info in PE64_List:
+            if self.magic_info.startswith(info):
+                return True
+        return False
 
     def is_elf64(self):
-        return 'ELF 64-bit' in self.magic_info
+        for info in ELF64_List:
+            if self.magic_info.startswith(info):
+                return True
+        return False
     
     def is_upx(self):
         return 'UPX compressed' in self.magic_info
@@ -46,9 +102,9 @@ def logmsg(s, end=None, debug=True):
         return
     if type(s) == str:
         if end != None:
-            print("[names] " + s),
+            print("[Debug] " + s),
         else:
-            print("[names] " + s)
+            print("[Debug] " + s)
     else:
         print(s)
 
@@ -73,8 +129,10 @@ def filter(f, name, extension, verbose=True):
         logmsg("{} is upx protected file.".format(f))
         return None
     elif magic_file.is_pe32() or magic_file.is_elf32():
+        logmsg("{} is PE32 file.".format(f))
         arch_ = 32
     elif magic_file.is_pe64() or magic_file.is_elf64():
+        logmsg("{} is PE64 file.".format(f))
         arch_ = 64
     else:
         logmsg("{} is neither 32 or 64 arch pe file.".format(f))
