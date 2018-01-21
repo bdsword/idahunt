@@ -67,7 +67,6 @@ ELF64_List = [
 class MagicFile:
     def __init__(self, name):
         self.magic_info = magic.from_file(name)
-        logmsg('Debug: {}'.format(self.magic_info))
 
     def is_pe32(self):
         for info in PE32_List:
@@ -129,10 +128,8 @@ def filter(f, name, extension, verbose=True):
         logmsg("{} is upx protected file.".format(f))
         return None
     elif magic_file.is_pe32() or magic_file.is_elf32():
-        logmsg("{} is PE32 file.".format(f))
         arch_ = 32
     elif magic_file.is_pe64() or magic_file.is_elf64():
-        logmsg("{} is PE64 file.".format(f))
         arch_ = 64
     else:
         logmsg("{} is neither 32 or 64 arch pe file.".format(f))
