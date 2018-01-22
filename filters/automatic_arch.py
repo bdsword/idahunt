@@ -28,6 +28,7 @@ PE32_List = [
     "PE32 executable (DLL) (console) Intel 80386 Mono/.Net assembly, for MS Windows",
     "PE32 executable (DLL) (GUI) Intel 80386, for MS Windows",
     "PE32 executable (DLL) (GUI) Intel 80386 Mono/.Net assembly, for MS Windows",
+    "PE32 executable (console) Intel 80386 (stripped to external PDB), for MS Windows",
     "PE32 executable (DLL) (GUI) Intel 80386 (stripped to external PDB), for MS Windows",
     "PE32 executable (DLL) (native) Intel 80386, for MS Windows",
     "PE32 executable (GUI) Intel 80386, for MS Windows",
