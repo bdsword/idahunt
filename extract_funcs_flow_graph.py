@@ -16,7 +16,7 @@ for segea in Segments():
     for funcea in Functions(segea, SegEnd(segea)):
         function_name = GetFunctionName(funcea)
         end_ea = FindFuncEnd(funcea)
-        GenFuncGdl(os.path.join(func_dir_path, function_name), "Call Gdl", funcea, end_ea, CHART_GEN_GDL | CHART_PRINT_NAMES);
+        GenFuncGdl(os.path.join(func_dir_path, function_name), None, funcea, end_ea, CHART_GEN_GDL | CHART_PRINT_NAMES);
         f.write(function_name + '\n')
 f.close()
 Exit(0)
