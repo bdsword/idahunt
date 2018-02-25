@@ -4,7 +4,7 @@ from idc import *
 import os
 
 
-path = GetIdbPath().rsplit('.')[0]
+path = os.path.splitext(GetIdbPath())[0]
 
 func_dir_path = path + '_functions'
 if not os.path.isdir(func_dir_path):
