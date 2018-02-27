@@ -143,6 +143,7 @@ def filter(f, name, extension, verbose=True):
            analyzed = True
            break
     if analyzed:
+        logmsg("{} is analyzed.".format(f))
         return None
         
     return f, arch_
