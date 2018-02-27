@@ -135,6 +135,15 @@ def filter(f, name, extension, verbose=True):
     else:
         logmsg("{} is neither 32 or 64 arch pe file.".format(f))
         return None
+
+    ida_db_ext = ['.idb', '.i64']
+    analyzed = False
+    for ext in ida_db_ext:
+        if os.path.isfile(os.path.join(os.path.splitext(f)[0], ext)):
+           analyzed = True
+           break
+    if analyzed:
+        return None
         
     return f, arch_
 
