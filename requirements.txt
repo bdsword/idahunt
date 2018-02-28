@@ -1,3 +1,4 @@
 networkx
 python-magic
+pydot
 
