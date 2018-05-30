@@ -225,7 +225,7 @@ if __name__ == "__main__":
                         .nam, .dmp files if IDA Pro crashed and did not delete them')
     parser.add_argument('--verbose', dest='verbose', default=False, action='store_true',
                         help='be more verbose to debug script')
-    parser.add_argument('--max-ida', dest='max_ida', default=10,
+    parser.add_argument('--max-ida', dest='max_ida', default=10, type=int,
                         help='Maximum number of instances of IDA to run at a time (default: 10)')
     parser.add_argument('--list-only', dest='list_only', default=False, action="store_true",
                         help='List only what files would be handled without executing IDA')
