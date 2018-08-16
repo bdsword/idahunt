@@ -2,29 +2,10 @@ from idautils import *
 from idaapi import *
 from idc import *
 import os
-import networkx as nx
+import datetime
 
-
-external_symbol_fillcolor = '#ff00ff'
-
+print('start: ', datetime.datetime.now())
 path = os.path.splitext(GetIdbPath())[0]
-
-# Get call graph dot file path
-dot_path = path + '.dot'
-if not os.path.isfile(dot_path):
-    print('Cannot find dot file for {}.'.format(os.path.splitext(GetIdbPath())[0] + '.run'))
-    Exit(-1)
-
-internal_functions = []
-graph = nx.drawing.nx_pydot.read_dot(dot_path)
-
-for node_name in graph.nodes:
-    fillcolor = re.findall(r'"(.*)"', graph.nodes[node_name]['fillcolor'])[0]
-    function_name = graph.nodes[node_name]['label']
-    if fillcolor != external_symbol_fillcolor:
-        function_name = re.findall(r'"(.*)\\+l"', function_name)[0]
-        internal_functions.append(function_name)
-
 func_dir_path = path + '_functions'
 if not os.path.isdir(func_dir_path):
     os.mkdir(func_dir_path)
@@ -36,10 +17,8 @@ for segea in Segments():
         function_name = GetFunctionName(funcea)
         end_ea = FindFuncEnd(funcea)
         f.write(function_name + '\n')
-        if function_name in internal_functions:
-            GenFuncGdl(os.path.join(func_dir_path, function_name) + '.gdl', None, funcea, end_ea, CHART_GEN_GDL | CHART_PRINT_NAMES);
-        else:
-            Message('Skipping {} because it is not a internal function.'.format(function_name))
+        GenFuncGdl(os.path.join(func_dir_path, function_name) + '.dot', None, funcea, end_ea, 0x2000 | CHART_PRINT_NAMES);
 f.close()
+print('end: ', datetime.datetime.now())
 Exit(0)
 
